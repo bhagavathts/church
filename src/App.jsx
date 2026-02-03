@@ -138,6 +138,19 @@ function App() {
             <div className="footer-section">
               <h3 className="footer-heading">Contact Us</h3>
               <div className="contact-links">
+               <a 
+  href="https://mail.google.com/mail/?view=cm&fs=1&to=doulos.smcy@gmail.com"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="contact-link"
+>
+  <span className="contact-icon">✉️</span>
+  <div>
+    <p className="contact-label">Email</p>
+    <p className="contact-value">doulos.smcy@gmail.com</p>
+  </div>
+</a>
+
                 <a href="tel:+919789543227" className="contact-link">
                   <span className="contact-icon">📞</span>
                   <div>
@@ -211,7 +224,7 @@ function App() {
           </div>
 
           <div className="footer-bottom">
-            <p>© 2026 St. Matthew's Church, Porur | Doulous '26 - Unchained</p>
+            <p>© 2026 St. Matthew's Church, Porur | Doulos '26 - Unchained</p>
           </div>
         </motion.footer>
       </motion.div>
