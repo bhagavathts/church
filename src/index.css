@@ -1,0 +1,20 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Old Standard TT', serif;
+  background: #f4e4c1;
+  overflow-x: hidden;
+}
+
+:root {
+  --parchment: #f4e4c1;
+  --dark-brown: #3d2817;
+  --burnt-orange: #c65d21;
+  --deep-red: #8b2500;
+  --aged-paper: #e8d4a8;
+  --ink-black: #1a0f08;
+}

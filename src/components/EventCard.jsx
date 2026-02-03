@@ -1,0 +1,161 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+const EventCard = ({ event, index }) => {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1, duration: 0.6 }}
+      whileHover={{ scale: 1.02, y: -5 }}
+      style={{ marginBottom: '20px' }}
+    >
+      <Accordion
+        expanded={expanded}
+        onChange={() => setExpanded(!expanded)}
+        sx={{
+          background: 'linear-gradient(135deg, rgba(244,228,193,0.95) 0%, rgba(232,212,168,0.95) 100%)',
+          border: '2px solid #8b2500',
+          borderRadius: '8px !important',
+          boxShadow: expanded 
+            ? '0 15px 40px rgba(139,37,0,0.4), inset 0 2px 8px rgba(255,255,255,0.3)'
+            : '0 8px 20px rgba(139,37,0,0.3), inset 0 2px 8px rgba(255,255,255,0.3)',
+          transition: 'all 0.3s ease',
+          overflow: 'hidden',
+          position: 'relative',
+          '&:before': {
+            display: 'none'
+          },
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'url("data:image/svg+xml,%3Csvg width="100" height="100" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /%3E%3C/filter%3E%3Crect width="100" height="100" filter="url(%23noise)" opacity="0.05" /%3E%3C/svg%3E")',
+            pointerEvents: 'none',
+            opacity: 0.3
+          }
+        }}
+      >
+        <AccordionSummary
+          expandIcon={
+            <motion.div
+              animate={{ rotate: expanded ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ExpandMoreIcon sx={{ color: '#8b2500', fontSize: '32px' }} />
+            </motion.div>
+          }
+          sx={{
+            padding: '16px 24px',
+            '& .MuiAccordionSummary-content': {
+              margin: '12px 0',
+              alignItems: 'center'
+            }
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', width: '100%' }}>
+            <motion.span
+              whileHover={{ scale: 1.2, rotate: 10 }}
+              style={{
+                fontSize: 'clamp(32px, 5vw, 48px)',
+                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
+              }}
+            >
+              {event.icon}
+            </motion.span>
+            <Typography
+              sx={{
+                fontFamily: "'Cinzel', serif",
+                fontSize: 'clamp(16px, 3vw, 22px)',
+                fontWeight: 700,
+                color: '#3d2817',
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
+                textShadow: '1px 1px 2px rgba(139,37,0,0.2)',
+                flex: 1
+              }}
+            >
+              {event.name}
+            </Typography>
+          </div>
+        </AccordionSummary>
+        <AccordionDetails
+          sx={{
+            padding: '24px',
+            borderTop: '2px solid #c65d21',
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 100%)'
+          }}
+        >
+          <AnimatePresence>
+            {expanded && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: "'Old Standard TT', serif",
+                    fontSize: 'clamp(15px, 2.5vw, 18px)',
+                    color: '#2c1810',
+                    marginBottom: '16px',
+                    fontWeight: 600,
+                    letterSpacing: '0.5px'
+                  }}
+                >
+                  Rules & Regulations:
+                </Typography>
+                <ul style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: 0
+                }}>
+                  {event.rules.map((rule, idx) => (
+                    <motion.li
+                      key={idx}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.1 }}
+                      style={{
+                        fontFamily: "'Old Standard TT', serif",
+                        fontSize: 'clamp(13px, 2.2vw, 16px)',
+                        color: '#3d2817',
+                        marginBottom: '12px',
+                        paddingLeft: '28px',
+                        position: 'relative',
+                        lineHeight: '1.6'
+                      }}
+                    >
+                      <span style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: '4px',
+                        color: '#c65d21',
+                        fontWeight: 700,
+                        fontSize: '18px'
+                      }}>
+                        ✦
+                      </span>
+                      {rule}
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </AccordionDetails>
+      </Accordion>
+    </motion.div>
+  );
+};
+
+export default EventCard;
