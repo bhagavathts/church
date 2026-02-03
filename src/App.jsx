@@ -211,7 +211,7 @@ function App() {
           </div>
 
           <div className="footer-bottom">
-            <p>© 2026 St. Matthew's Church, Porur | Doulos '26 - Unchained</p>
+            <p>© 2026 St. Matthew's Church, Porur | Doulous '26 - Unchained</p>
           </div>
         </motion.footer>
       </motion.div>
