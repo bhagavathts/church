@@ -66,9 +66,10 @@
 }
 
 .org-line {
-  font-size: clamp(12px, 2vw, 16px);
-  font-weight: 400;
-  color: #8b2500;
+  font-size: clamp(14px, 2.2vw, 18px);
+  font-weight: 700;
+  color: #2c1810;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .church-name {
@@ -96,18 +97,31 @@
 /* Main Title */
 .main-title {
   font-family: 'Cinzel', serif;
-  font-size: clamp(44px, 9vw, 140px);
+  font-size: clamp(60px, 12vw, 180px);
   font-weight: 900;
   color: #8b2500;
-  text-transform: uppercase;
   letter-spacing: clamp(3px, 1vw, 8px);
-  margin: 40px 0;
+  margin: 40px 0 10px;
   text-shadow: 
     0 4px 8px rgba(139,37,0,0.3),
     0 8px 20px rgba(139,37,0,0.2);
   -webkit-text-stroke: 2px #c65d21;
   filter: drop-shadow(0 3px 8px rgba(0,0,0,0.15));
   position: relative;
+}
+
+.doulos-subtitle {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(24px, 5vw, 48px);
+  font-weight: 900;
+  color: #8b2500;
+  letter-spacing: clamp(2px, 0.5vw, 4px);
+  margin: 0 0 30px;
+  text-shadow: 
+    0 4px 8px rgba(139,37,0,0.3),
+    0 8px 20px rgba(139,37,0,0.2);
+  -webkit-text-stroke: 2px #c65d21;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.15));
 }
 
 /* Event Details */
@@ -527,8 +541,12 @@
 
 @media (max-width: 480px) {
   .main-title {
-    font-size: clamp(38px, 8vw, 140px);
+    font-size: clamp(50px, 10vw, 180px);
     letter-spacing: 1px;
+  }
+
+  .doulos-subtitle {
+    font-size: clamp(20px, 4.5vw, 48px);
   }
   
   .theme-title {

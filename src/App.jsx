@@ -30,7 +30,7 @@ function App() {
               className="organization"
             >
               <p className="org-line">CSI MADRAS DIOCESE - PORUR PASTORATE</p>
-              <p className="church-name">ST. MATTHEW'S CHURCH, PORUR</p>
+              <p className="church-name">CSI ST. MATTHEW'S CHURCH, PORUR</p>
               <p className="fellowship">YOUTH FELLOWSHIP</p>
               <p className="presents">PRESENTS</p>
             </motion.div>
@@ -42,8 +42,17 @@ function App() {
               transition={{ delay: 0.8, duration: 1.2, ease: "backOut" }}
               className="main-title"
             >
-              DOULOUS '26
+              δοῦλος '26
             </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1, duration: 0.8 }}
+              className="doulos-subtitle"
+            >
+              Doulos '26
+            </motion.p>
 
             {/* Event Details */}
             <motion.div
@@ -54,8 +63,8 @@ function App() {
             >
               <div className="date-time-container">
                 <div className="date-section">
-                  <span className="label">THURSDAY</span>
-                  <span className="date-number">16</span>
+                  <span className="label">TUESDAY</span>
+                  <span className="date-number">14</span>
                   <span className="label">APRIL 2026</span>
                 </div>
                 <div className="time-section">
@@ -92,7 +101,7 @@ function App() {
                   "SO IF THE SON SETS YOU FREE, YOU<br />
                   WILL BE FREE INDEED"
                 </p>
-                <p className="bible-reference">JOHN 8:36 NIV</p>
+                <p className="bible-reference">JOHN 8:36</p>
               </div>
             </motion.div>
 
@@ -120,7 +129,7 @@ function App() {
           >
             Event Countdown
           </motion.h2>
-          <Countdown targetDate="2026-04-16T09:00:00" />
+          <Countdown targetDate="2026-04-14T09:00:00" />
         </section>
 
         {/* Events Section */}
