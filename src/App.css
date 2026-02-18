@@ -499,7 +499,109 @@
   letter-spacing: 0.5px;
 }
 
-/* Responsive adjustments */
+/* ========================================
+   CINEMATIC VIDEO INTRO STYLES - 4K READY
+   ======================================== */
+
+/* Cinematic Video Quality Enhancements */
+video {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  image-rendering: crisp-edges;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Remove all video controls for cinematic experience */
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+video::-webkit-media-controls-panel {
+  display: none !important;
+}
+
+/* Cinematic Video - Full Screen Coverage */
+.cinematic-video {
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+}
+
+/* Fullscreen API Styles */
+:fullscreen .cinematic-video,
+:-webkit-full-screen .cinematic-video,
+:-moz-full-screen .cinematic-video,
+:-ms-fullscreen .cinematic-video {
+  width: 100vw !important;
+  height: 100vh !important;
+  object-fit: cover !important;
+}
+
+/* Enhanced rendering for all devices */
+@media (min-width: 1920px) {
+  /* 4K Displays */
+  .cinematic-video {
+    filter: contrast(1.2) brightness(1.1) saturate(1.15) !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1919px) {
+  /* Full HD Displays */
+  .cinematic-video {
+    filter: contrast(1.15) brightness(1.08) saturate(1.1) !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  /* Mobile and Tablet */
+  .cinematic-video {
+    filter: contrast(1.12) brightness(1.05) saturate(1.08) !important;
+  }
+}
+
+/* Prevent text selection during video */
+:fullscreen,
+:-webkit-full-screen,
+:-moz-full-screen,
+:-ms-fullscreen {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Smooth transitions */
+.cinematic-video {
+  transition: filter 0.3s ease-in-out;
+}
+
+/* Hardware acceleration */
+.cinematic-video {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+/* Fix for iOS Safari viewport issues */
+@supports (-webkit-touch-callout: none) {
+  .cinematic-video {
+    height: -webkit-fill-available;
+  }
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
 @media (max-width: 768px) {
   .hero-section {
     min-height: auto;

@@ -2,6 +2,13 @@ import { motion } from 'framer-motion';
 import EventCard from './EventCard';
 import { offlineEvents, onlineEvents } from '../data/events';
 
+const onlineSubmissionGuidelines = [
+  "Upload your files to Google Drive and share the Drive link with us.",
+  "Name the files using your Church Name.",
+  "Ensure the file access is unrestricted / accessible.",
+  "Mail all submissions to doulos.smcy@gmail.com on or before April 7th."
+];
+
 const EventsSection = () => {
   const SectionTitle = ({ children, delay = 0 }) => (
     <motion.h2
@@ -44,11 +51,8 @@ const EventsSection = () => {
   );
 
   return (
-    <div style={{
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '60px 20px'
-    }}>
+    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 20px' }}>
+
       {/* General Rules Section */}
       <motion.section
         initial={{ opacity: 0, y: 30 }}
@@ -66,17 +70,6 @@ const EventsSection = () => {
           overflow: 'hidden'
         }}
       >
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' /%3E%3C/filter%3E%3Crect width=\'100\' height=\'100\' filter=\'url(%23noise)\' opacity=\'0.05\' /%3E%3C/svg%3E")',
-          pointerEvents: 'none',
-          opacity: 0.3
-        }} />
-        
         <motion.h2
           initial={{ scale: 0.9 }}
           whileInView={{ scale: 1 }}
@@ -99,19 +92,13 @@ const EventsSection = () => {
            General Rules 
         </motion.h2>
 
-        <ul style={{
-          listStyle: 'none',
-          padding: 0,
-          margin: 0,
-          position: 'relative',
-          zIndex: 1
-        }}>
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, position: 'relative', zIndex: 1 }}>
           {[
             "Registration will be open between 8:30 AM and 9:30 AM.",
-            "A registration fee of Rs.200 per participant is mandatory.",
-            "All online event submissions must be completed on or before 7th April.",
-            "Any form of misconduct or malpractice will lead to immediate disqualification.",
-            "The verdict of the Organizers shall be final and irrevocable."
+            "The registration fee is Rs.2000 per church and Rs.100 for individual participants.",
+            "Please take a moment to confirm your participation on or before April 5th through the online registration form.",
+            "All online event submissions must be completed on or before April 7th.",
+            "Any act of misconduct or malpractice results in disqualification. The Verdict of the Organizers shall be final."
           ].map((rule, idx) => (
             <motion.li
               key={idx}
@@ -144,7 +131,7 @@ const EventsSection = () => {
                   fontSize: '24px'
                 }}
               >
-                ✦
+               ✦ 
               </motion.span>
               {rule}
             </motion.li>
@@ -154,9 +141,7 @@ const EventsSection = () => {
 
       {/* Offline Events */}
       <section style={{ marginBottom: '100px' }}>
-        <SectionTitle>
-           Offline Events 
-        </SectionTitle>
+        <SectionTitle> Offline Events </SectionTitle>
         <div>
           {offlineEvents.map((event, index) => (
             <EventCard key={event.id} event={event} index={index} />
@@ -166,9 +151,116 @@ const EventsSection = () => {
 
       {/* Online Events */}
       <section style={{ marginBottom: '80px' }}>
-        <SectionTitle delay={0.2}>
-           Online Events 
-        </SectionTitle>
+        <SectionTitle delay={0.2}> Online Events </SectionTitle>
+
+        {/* Online Submission Guidelines Note */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          style={{
+            marginBottom: '50px',
+            marginTop: '40px',
+            position: 'relative',
+          }}
+        >
+          {/* Decorative label — outside the bordered box so it's never clipped */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '-1px',
+            position: 'relative',
+            zIndex: 2
+          }}>
+            <div style={{
+              background: 'linear-gradient(135deg, #c65d21, #8b2500)',
+              color: '#f4e4c1',
+              fontFamily: "'Cinzel', serif",
+              fontSize: 'clamp(12px, 1.8vw, 15px)',
+              fontWeight: 700,
+              letterSpacing: '2px',
+              padding: '10px 28px',
+              borderRadius: '10px 10px 0 0',
+              whiteSpace: 'nowrap',
+              boxShadow: '0 -4px 12px rgba(139,37,0,0.3)',
+              border: '2px solid #8b2500',
+              borderBottom: 'none',
+              textTransform: 'uppercase'
+            }}>
+              📜 Online Submission Guidelines
+            </div>
+          </div>
+
+          {/* Box content */}
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(139,37,0,0.08) 0%, rgba(198,93,33,0.05) 100%)',
+            border: '2px solid #c65d21',
+            borderRadius: '0 14px 14px 14px',
+            padding: 'clamp(24px, 4vw, 40px)',
+          }}>
+            <p style={{
+              fontFamily: "'Old Standard TT', serif",
+              fontSize: 'clamp(13px, 2vw, 16px)',
+              color: '#8b2500',
+              fontWeight: 600,
+              fontStyle: 'italic',
+              textAlign: 'center',
+              marginBottom: '20px',
+              marginTop: '0'
+            }}>
+              Please follow these instructions carefully for all online event submissions:
+            </p>
+
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {onlineSubmissionGuidelines.map((line, idx) => (
+                <motion.li
+                  key={idx}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1, duration: 0.5 }}
+                  style={{
+                    fontFamily: "'Old Standard TT', serif",
+                    fontSize: 'clamp(13px, 2.2vw, 16px)',
+                    color: '#3d2817',
+                    marginBottom: '12px',
+                    paddingLeft: '32px',
+                    position: 'relative',
+                    lineHeight: '1.7',
+                    fontWeight: 500
+                  }}
+                >
+                  <span style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: '3px',
+                    color: '#c65d21',
+                    fontWeight: 700,
+                    fontSize: '18px'
+                  }}>✦</span>
+                  {line}
+                </motion.li>
+              ))}
+            </ul>
+
+            <p style={{
+              fontFamily: "'Cinzel', serif",
+              fontSize: 'clamp(12px, 1.8vw, 14px)',
+              color: '#8b2500',
+              fontWeight: 700,
+              textAlign: 'center',
+              marginTop: '20px',
+              marginBottom: '0',
+              letterSpacing: '1px',
+              borderTop: '1px solid rgba(198,93,33,0.3)',
+              paddingTop: '16px'
+            }}>
+              ⚠️ Deadline: April 7th — Late submissions will not be accepted.
+            </p>
+          </div>
+        </motion.div>
+
         <div>
           {onlineEvents.map((event, index) => (
             <EventCard key={event.id} event={event} index={index} />
@@ -176,18 +268,13 @@ const EventsSection = () => {
         </div>
       </section>
 
-      {/* Single Register Button */}
+      {/* Register Button */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: '60px',
-          marginBottom: '40px'
-        }}
+        style={{ display: 'flex', justifyContent: 'center', marginTop: '60px', marginBottom: '40px' }}
       >
         <motion.a
           href="YOUR_GOOGLE_FORM_LINK_HERE"
