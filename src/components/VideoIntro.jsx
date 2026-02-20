@@ -18,12 +18,34 @@ const VideoIntro = ({ onComplete }) => {
     }
   }, []);
 
-  // Mobile: play portrait video, then go to page
+  // Mobile video play logic
   useEffect(() => {
     if (!isMobile) return;
-    // handled by render
-  }, [isMobile]);
+    const video = videoRef.current;
+    if (!video) return;
 
+    const tryPlay = () => {
+      // Try with sound first
+      video.muted = false;
+      const p = video.play();
+      if (p !== undefined) {
+        p.catch(() => {
+          // If blocked, fall back to muted (autoplay policy)
+          video.muted = true;
+          video.play().catch(() => {
+            setError(true);
+            setTimeout(() => onComplete(), 500);
+          });
+        });
+      }
+    };
+
+    if (videoLoaded) {
+      tryPlay();
+    }
+  }, [isMobile, videoLoaded, onComplete]);
+
+  // Desktop fullscreen logic — untouched
   useEffect(() => {
     if (isMobile || isTablet) return;
 
@@ -70,6 +92,7 @@ const VideoIntro = ({ onComplete }) => {
     }
   }, [videoLoaded, onComplete, isMobile, isTablet]);
 
+  // Desktop fullscreen change listener — untouched
   useEffect(() => {
     if (isMobile) return;
 
@@ -105,7 +128,7 @@ const VideoIntro = ({ onComplete }) => {
     };
   }, [onComplete, isMobile]);
 
-  // Mobile: show portrait video
+  // Mobile render
   if (isMobile) {
     return (
       <motion.div
@@ -126,52 +149,74 @@ const VideoIntro = ({ onComplete }) => {
           overflow: 'hidden'
         }}
       >
+        {/* Loading spinner shown until video is ready */}
+        {!videoLoaded && !error && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              textAlign: 'center',
+              zIndex: 10
+            }}
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+              style={{
+                width: '60px',
+                height: '60px',
+                border: '5px solid rgba(198,93,33,0.2)',
+                borderTop: '5px solid #c65d21',
+                borderRadius: '50%',
+                margin: '0 auto 20px',
+              }}
+            />
+            <motion.p
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              style={{
+                fontFamily: "'Cinzel', serif",
+                color: '#f4e4c1',
+                fontSize: '16px',
+                letterSpacing: '3px',
+                textTransform: 'uppercase',
+              }}
+            >
+              Experience Awaits...
+            </motion.p>
+          </motion.div>
+        )}
+
         <video
           ref={videoRef}
           playsInline
-          autoPlay
-          muted={false}
+          muted
           preload="auto"
+          onCanPlay={() => setVideoLoaded(true)}
           onEnded={() => setTimeout(() => onComplete(), 500)}
-          onError={() => setTimeout(() => onComplete(), 500)}
+          onError={() => {
+            setError(true);
+            setTimeout(() => onComplete(), 500);
+          }}
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
             filter: 'contrast(1.12) brightness(1.05) saturate(1.08)',
+            display: videoLoaded ? 'block' : 'none'
           }}
         >
           <source src="/portrait.mp4" type="video/mp4" />
         </video>
-
-        {/* Skip button for mobile */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
-          onClick={() => onComplete()}
-          style={{
-            position: 'absolute',
-            bottom: '40px',
-            right: '20px',
-            background: 'rgba(139,37,0,0.7)',
-            color: '#f4e4c1',
-            border: '2px solid #c65d21',
-            borderRadius: '8px',
-            padding: '10px 20px',
-            fontFamily: "'Cinzel', serif",
-            fontSize: '14px',
-            letterSpacing: '2px',
-            cursor: 'pointer',
-            zIndex: 10
-          }}
-        >
-          SKIP ▶
-        </motion.button>
       </motion.div>
     );
   }
 
+  // Tablet & Desktop — completely untouched
   const handleVideoEnd = () => {
     if (document.exitFullscreen) document.exitFullscreen();
     else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
