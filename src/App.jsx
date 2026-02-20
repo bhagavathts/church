@@ -346,10 +346,9 @@ function App() {
             >
               <div className="footer-content">
                 {/* Contact Info */}
-                <div className="footer-section">
+              <div className="footer-section">
                   <h3 className="footer-heading">Contact Us</h3>
                   <div className="contact-links">
-                    {/* Fixed: added missing <a> tag */}
                     <a
                       href={GMAIL_LINK}
                       target="_blank"
@@ -366,6 +365,7 @@ function App() {
                       <span className="contact-icon">📞</span>
                       <div>
                         <p className="contact-label">Youth Secretary</p>
+                        <p className="contact-value">D. Immanuel Joseph</p>
                         <p className="contact-value">+91 97895 43227</p>
                       </div>
                     </a>
@@ -373,6 +373,7 @@ function App() {
                       <span className="contact-icon">📞</span>
                       <div>
                         <p className="contact-label">Youth Treasurer</p>
+                        <p className="contact-value">L. Aneerben</p>
                         <p className="contact-value">+91 89393 69392</p>
                       </div>
                     </a>
@@ -380,6 +381,7 @@ function App() {
                       <span className="contact-icon">📞</span>
                       <div>
                         <p className="contact-label">Youth Convener</p>
+                        <p className="contact-value">K. Rathinakumar</p>
                         <p className="contact-value">+91 99405 18084</p>
                       </div>
                     </a>

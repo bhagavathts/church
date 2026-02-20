@@ -277,7 +277,7 @@ const EventsSection = () => {
         style={{ display: 'flex', justifyContent: 'center', marginTop: '60px', marginBottom: '40px' }}
       >
         <motion.a
-          href="YOUR_GOOGLE_FORM_LINK_HERE"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSei4baC2PRMx4Q8xSTLtM0mDZEjFv-eEmNdH9pk-fuxXogQpQ/viewform?usp=publish-editor"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.08, y: -3 }}

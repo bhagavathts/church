@@ -18,12 +18,11 @@ const VideoIntro = ({ onComplete }) => {
     }
   }, []);
 
-  // Skip video on mobile — go straight to page
+  // Mobile: play portrait video, then go to page
   useEffect(() => {
-    if (isMobile) {
-      onComplete();
-    }
-  }, [isMobile, onComplete]);
+    if (!isMobile) return;
+    // handled by render
+  }, [isMobile]);
 
   useEffect(() => {
     if (isMobile || isTablet) return;
@@ -106,8 +105,72 @@ const VideoIntro = ({ onComplete }) => {
     };
   }, [onComplete, isMobile]);
 
-  // Mobile: render nothing (already called onComplete)
-  if (isMobile) return null;
+  // Mobile: show portrait video
+  if (isMobile) {
+    return (
+      <motion.div
+        initial={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1, ease: 'easeInOut' }}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: 9999,
+          backgroundColor: '#000000',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden'
+        }}
+      >
+        <video
+          ref={videoRef}
+          playsInline
+          autoPlay
+          muted={false}
+          preload="auto"
+          onEnded={() => setTimeout(() => onComplete(), 500)}
+          onError={() => setTimeout(() => onComplete(), 500)}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            filter: 'contrast(1.12) brightness(1.05) saturate(1.08)',
+          }}
+        >
+          <source src="/portrait.mp4" type="video/mp4" />
+        </video>
+
+        {/* Skip button for mobile */}
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+          onClick={() => onComplete()}
+          style={{
+            position: 'absolute',
+            bottom: '40px',
+            right: '20px',
+            background: 'rgba(139,37,0,0.7)',
+            color: '#f4e4c1',
+            border: '2px solid #c65d21',
+            borderRadius: '8px',
+            padding: '10px 20px',
+            fontFamily: "'Cinzel', serif",
+            fontSize: '14px',
+            letterSpacing: '2px',
+            cursor: 'pointer',
+            zIndex: 10
+          }}
+        >
+          SKIP ▶
+        </motion.button>
+      </motion.div>
+    );
+  }
 
   const handleVideoEnd = () => {
     if (document.exitFullscreen) document.exitFullscreen();
@@ -126,7 +189,6 @@ const VideoIntro = ({ onComplete }) => {
   const handleCanPlay = () => {
     setVideoLoaded(true);
 
-    // For tablet: play without fullscreen, directly
     if (isTablet && videoRef.current) {
       videoRef.current.play().catch(err => {
         videoRef.current.muted = true;
@@ -193,14 +255,12 @@ const VideoIntro = ({ onComplete }) => {
           style={
             isTablet
               ? {
-                  // Tablet: zoomed out so full title is visible
                   width: '70%',
                   height: 'auto',
                   objectFit: 'contain',
                   filter: 'contrast(1.15) brightness(1.08) saturate(1.1)',
                 }
               : {
-                  // Desktop: unchanged original behaviour
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
