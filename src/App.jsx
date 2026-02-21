@@ -199,6 +199,314 @@ const DoulosMeaning = () => (
   </motion.section>
 );
 
+/* ── Flash Through Time ── */
+const FlashThroughTime = () => (
+  <motion.section
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.9 }}
+    style={{
+      padding: 'clamp(50px, 7vw, 90px) clamp(20px, 5vw, 60px)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }}
+  >
+    {/* Title */}
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.2, duration: 0.8 }}
+      style={{ textAlign: 'center', marginBottom: '50px', position: 'relative' }}
+    >
+      <p style={{
+        fontFamily: "'Old Standard TT', serif",
+        fontSize: 'clamp(12px, 1.8vw, 15px)',
+        color: '#c65d21',
+        letterSpacing: '5px',
+        textTransform: 'uppercase',
+        marginBottom: '8px',
+        fontWeight: 600
+      }}>A Journey Through The Years</p>
+      <h2 style={{
+        fontFamily: "'Cinzel', serif",
+        fontSize: 'clamp(28px, 5vw, 52px)',
+        fontWeight: 800,
+        color: '#3d2817',
+        textTransform: 'uppercase',
+        letterSpacing: '4px',
+        margin: '0 0 20px',
+        textShadow: '0 2px 8px rgba(139,37,0,0.2)'
+      }}>Flash Through Time</h2>
+      <div style={{
+        width: '200px',
+        height: '3px',
+        background: 'linear-gradient(90deg, transparent, #c65d21, transparent)',
+        margin: '0 auto'
+      }} />
+    </motion.div>
+
+    {/* Two photos — Then & Now */}
+    <div style={{
+      display: 'flex',
+      gap: 'clamp(20px, 4vw, 60px)',
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+      width: '100%',
+      maxWidth: '1100px'
+    }}>
+      {[
+        { src: '/group.jpeg', label: 'Then', year: '2007' },
+        { src: '/group1.jpeg', label: 'Now', year: '2026' }
+      ].map((photo, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.2, duration: 0.7 }}
+          whileHover={{ y: -6 }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            flex: '1 1 320px',
+            maxWidth: '480px'
+          }}
+        >
+          {/* Label badge */}
+          <div style={{
+            background: 'linear-gradient(135deg, #c65d21, #8b2500)',
+            color: '#f4e4c1',
+            fontFamily: "'Cinzel', serif",
+            fontSize: 'clamp(13px, 2vw, 16px)',
+            fontWeight: 700,
+            letterSpacing: '3px',
+            padding: '8px 28px',
+            borderRadius: '30px',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(139,37,0,0.35)',
+            textTransform: 'uppercase'
+          }}>
+            {photo.label} · {photo.year}
+          </div>
+
+          {/* Photo frame */}
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            border: '3px solid #8b2500',
+            boxShadow: '0 12px 40px rgba(139,37,0,0.3), inset 0 2px 8px rgba(255,255,255,0.2)'
+          }}>
+            <img
+              src={photo.src}
+              alt={`Doulos ${photo.label}`}
+              style={{
+                width: '100%',
+                height: 'clamp(200px, 30vw, 320px)',
+                objectFit: 'cover',
+                display: 'block',
+                filter: photo.label === 'Then'
+                  ? 'sepia(30%) contrast(1.05) brightness(0.95)'
+                  : 'contrast(1.05) brightness(1.02) saturate(1.05)'
+              }}
+            />
+            {/* Parchment overlay */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              background: photo.label === 'Then'
+                ? 'linear-gradient(180deg, rgba(139,37,0,0.08) 0%, transparent 40%, rgba(61,40,23,0.15) 100%)'
+                : 'linear-gradient(180deg, rgba(139,37,0,0.05) 0%, transparent 40%, rgba(61,40,23,0.1) 100%)',
+              pointerEvents: 'none'
+            }} />
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </motion.section>
+);
+
+/* ── Esteemed Leadership ── */
+const EsteemedLeadership = () => (
+  <motion.section
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.9 }}
+    style={{
+      padding: 'clamp(50px, 7vw, 90px) clamp(20px, 5vw, 60px)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      background: 'linear-gradient(180deg, rgba(139,37,0,0.05) 0%, rgba(198,93,33,0.03) 100%)',
+      borderTop: '2px solid rgba(198,93,33,0.25)',
+      borderBottom: '2px solid rgba(198,93,33,0.25)'
+    }}
+  >
+    {/* Title */}
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.2, duration: 0.8 }}
+      style={{ textAlign: 'center', marginBottom: '55px', position: 'relative' }}
+    >
+      <p style={{
+        fontFamily: "'Old Standard TT', serif",
+        fontSize: 'clamp(12px, 1.8vw, 15px)',
+        color: '#c65d21',
+        letterSpacing: '5px',
+        textTransform: 'uppercase',
+        marginBottom: '8px',
+        fontWeight: 600
+      }}>Guided By Faith & Wisdom</p>
+      <h2 style={{
+        fontFamily: "'Cinzel', serif",
+        fontSize: 'clamp(24px, 4.5vw, 48px)',
+        fontWeight: 800,
+        color: '#3d2817',
+        textTransform: 'uppercase',
+        letterSpacing: '3px',
+        margin: '0 0 20px',
+        textShadow: '0 2px 8px rgba(139,37,0,0.2)'
+      }}>Under The Esteemed Leadership Of</h2>
+      <div style={{
+        width: '200px',
+        height: '3px',
+        background: 'linear-gradient(90deg, transparent, #c65d21, transparent)',
+        margin: '0 auto'
+      }} />
+    </motion.div>
+
+    {/* Three leader photos */}
+    <div style={{
+      display: 'flex',
+      gap: 'clamp(24px, 4vw, 60px)',
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+      width: '100%',
+      maxWidth: '1000px',
+      marginBottom: '40px'
+    }}>
+      {[
+        {
+          src: '/presbyter.jpeg',
+          name: 'Rev. C. Samuel',
+          role: 'Presbyter In-Charge'
+        },
+        {
+          src: '/pastoratesecretary.jpeg',
+          name: 'Mr. S. Albert Kingsbell Jebakuma',
+          role: 'Pastorate Secretary'
+        },
+        {
+          src: '/pastoratetreasurer.jpeg',
+          name: 'Mr. P. Horsley Solomon',
+          role: 'Pastorate Treasurer'
+        }
+      ].map((leader, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.15, duration: 0.7 }}
+          whileHover={{ y: -6 }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            flex: '1 1 220px',
+            maxWidth: '260px'
+          }}
+        >
+          {/* Round photo */}
+          <div style={{
+            width: 'clamp(130px, 18vw, 180px)',
+            height: 'clamp(130px, 18vw, 180px)',
+            borderRadius: '50%',
+            overflow: 'hidden',
+            border: '4px solid #8b2500',
+            boxShadow: '0 8px 30px rgba(139,37,0,0.35), 0 0 0 3px rgba(198,93,33,0.2)',
+            marginBottom: '18px',
+            flexShrink: 0
+          }}>
+            <img
+              src={leader.src}
+              alt={leader.name}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'top'
+              }}
+            />
+          </div>
+
+          {/* Role */}
+          <p style={{
+            fontFamily: "'Cinzel', serif",
+            fontSize: 'clamp(10px, 1.5vw, 12px)',
+            color: '#c65d21',
+            fontWeight: 700,
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            marginBottom: '6px',
+            textAlign: 'center'
+          }}>
+            {leader.role}
+          </p>
+
+          {/* Name */}
+          <p style={{
+            fontFamily: "'Old Standard TT', serif",
+            fontSize: 'clamp(14px, 2vw, 17px)',
+            color: '#2c1810',
+            fontWeight: 700,
+            textAlign: 'center',
+            lineHeight: '1.4',
+            margin: 0
+          }}>
+            {leader.name}
+          </p>
+        </motion.div>
+      ))}
+    </div>
+
+    {/* Gratitude line */}
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.5, duration: 0.7 }}
+      style={{
+        maxWidth: '700px',
+        textAlign: 'center',
+        padding: '20px 30px',
+        background: 'linear-gradient(135deg, rgba(244,228,193,0.9) 0%, rgba(232,212,168,0.9) 100%)',
+        border: '1.5px solid rgba(198,93,33,0.4)',
+        borderRadius: '10px',
+        boxShadow: '0 4px 16px rgba(139,37,0,0.1)'
+      }}
+    >
+      <span style={{
+        fontFamily: "'IM Fell English', serif",
+        fontSize: 'clamp(14px, 2.2vw, 17px)',
+        color: '#3d2817',
+        fontStyle: 'italic',
+        lineHeight: '1.7'
+      }}>
+        We express our gratitude to our respected church leaders for their encouragement and support.
+      </span>
+    </motion.div>
+  </motion.section>
+);
+
 function App() {
   const [showContent, setShowContent] = useState(false);
 
@@ -222,6 +530,29 @@ function App() {
                 transition={{ delay: 0.3, duration: 1 }}
                 className="hero-content"
               >
+                {/* Church Logo top */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.8 }}
+                  style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}
+                >
+                  <img
+                    src="/churchlogo.jpeg"
+                    alt="Church Logo"
+                    style={{
+                      width: 'clamp(70px, 10vw, 110px)',
+                      height: 'clamp(70px, 10vw, 110px)',
+                      objectFit: 'contain',
+                      borderRadius: '50%',
+                      border: '2px solid rgba(198,93,33,0.4)',
+                      boxShadow: '0 4px 20px rgba(139,37,0,0.2)',
+                      background: 'rgba(244,228,193,0.6)',
+                      padding: '6px'
+                    }}
+                  />
+                </motion.div>
+
                 {/* Organization Name */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -233,6 +564,40 @@ function App() {
                   <p className="church-name">CSI ST. MATTHEW'S CHURCH, PORUR</p>
                   <p className="fellowship">YOUTH FELLOWSHIP</p>
                   <p className="presents">PRESENTS</p>
+                </motion.div>
+
+                {/* Doulos Logo above title */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.7 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.7, duration: 0.9, ease: 'backOut' }}
+                  style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px', marginTop: '10px' }}
+                >
+                  <div style={{ position: 'relative', display: 'inline-block' }}>
+                    <img
+                      src="/douloslogo.jpeg"
+                      alt="Doulos Logo"
+                      style={{
+                        width: 'clamp(100px, 16vw, 160px)',
+                        height: 'clamp(100px, 16vw, 160px)',
+                        objectFit: 'contain',
+                        borderRadius: '50%',
+                        border: '3px solid #c65d21',
+                        boxShadow: '0 0 30px rgba(198,93,33,0.5), 0 0 60px rgba(139,37,0,0.2), inset 0 2px 8px rgba(255,255,255,0.3)',
+                        background: 'rgba(244,228,193,0.85)',
+                        padding: '8px',
+                        filter: 'sepia(20%) contrast(1.1) brightness(1.05)'
+                      }}
+                    />
+                    {/* Glow ring */}
+                    <div style={{
+                      position: 'absolute',
+                      inset: '-6px',
+                      borderRadius: '50%',
+                      border: '1.5px solid rgba(198,93,33,0.3)',
+                      pointerEvents: 'none'
+                    }} />
+                  </div>
                 </motion.div>
 
                 {/* Main Title */}
@@ -304,16 +669,7 @@ function App() {
                   </div>
                 </motion.div>
 
-                {/* Contact */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 2, duration: 0.8 }}
-                  className="contact-section"
-                >
-                  <p className="contact-name">Rev. C. Samuel Jebakumar</p>
-                  <p className="contact-title">Presbyter In-Charge</p>
-                </motion.div>
+               
               </motion.div>
             </section>
 
@@ -337,6 +693,12 @@ function App() {
             {/* Events Section */}
             <EventsSection />
 
+            {/* Flash Through Time */}
+            <FlashThroughTime />
+
+            {/* Esteemed Leadership */}
+            <EsteemedLeadership />
+
             {/* Footer */}
             <motion.footer
               initial={{ opacity: 0 }}
@@ -346,9 +708,10 @@ function App() {
             >
               <div className="footer-content">
                 {/* Contact Info */}
-              <div className="footer-section">
+                <div className="footer-section">
                   <h3 className="footer-heading">Contact Us</h3>
                   <div className="contact-links">
+                    {/* Fixed: added missing <a> tag */}
                     <a
                       href={GMAIL_LINK}
                       target="_blank"

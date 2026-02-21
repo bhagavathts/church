@@ -57,6 +57,97 @@ const EventCard = ({ event, index }) => {
     </div>
   );
 
+  const OrganiserBlock = ({ value }) => {
+    const parts = value.split('—').map(p => p.trim());
+    const name = parts[0] || value;
+    const phone = parts[1] || null;
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        style={{ marginTop: '28px' }}
+      >
+        {/* Divider */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          marginBottom: '14px'
+        }}>
+          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, #c65d21)' }} />
+          <span style={{ color: '#c65d21', fontSize: '13px', letterSpacing: '4px' }}>✦ ✦ ✦</span>
+          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, #c65d21, transparent)' }} />
+        </div>
+
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(139,37,0,0.1) 0%, rgba(198,93,33,0.06) 100%)',
+          border: '1.5px solid #c65d21',
+          borderRadius: '10px',
+          padding: '16px 20px',
+          boxShadow: '0 4px 14px rgba(139,37,0,0.1), inset 0 1px 4px rgba(255,255,255,0.3)'
+        }}>
+          {/* Label */}
+          <Typography sx={{
+            fontFamily: "'Cinzel', serif",
+            fontSize: 'clamp(13px, 2.2vw, 16px)',
+            color: '#8b2500',
+            fontWeight: 700,
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            marginBottom: '10px',
+            borderBottom: '1px solid rgba(198,93,33,0.3)',
+            paddingBottom: '8px'
+          }}>
+            Event Organiser
+          </Typography>
+
+          {/* Name */}
+          <Typography sx={{
+            fontFamily: "'Old Standard TT', serif",
+            fontSize: 'clamp(13px, 2.2vw, 16px)',
+            color: '#2c1810',
+            fontWeight: 700,
+            marginBottom: phone ? '6px' : '0'
+          }}>
+            {name}
+          </Typography>
+
+          {/* Phone */}
+          {phone && (
+            <Typography sx={{
+              fontFamily: "'Old Standard TT', serif",
+              fontSize: 'clamp(13px, 2.2vw, 16px)',
+              color: '#3d2817',
+              fontWeight: 600,
+              letterSpacing: '1px'
+            }}>
+              {phone}
+            </Typography>
+          )}
+        </div>
+      </motion.div>
+    );
+  };
+
+  const getOrganiser = () => {
+    if (event.roundDetails && event.roundDetails.organiser) {
+      return event.roundDetails.organiser;
+    }
+    if (event.details) {
+      const org = event.details.find(d => d.label === 'Organiser');
+      return org ? org.value : null;
+    }
+    return null;
+  };
+
+  const filteredDetails = event.details
+    ? event.details.filter(d => d.label !== 'Organiser')
+    : [];
+
+  const organiser = getOrganiser();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -177,10 +268,10 @@ const EventCard = ({ event, index }) => {
                   </div>
                 )}
 
-                {/* Regular Details */}
-                {event.details && event.details.length > 0 && (
+                {/* Regular Details — Organiser filtered out */}
+                {filteredDetails.length > 0 && (
                   <div style={{ marginBottom: '20px' }}>
-                    {event.details.map((detail, idx) => (
+                    {filteredDetails.map((detail, idx) => (
                       <motion.div
                         key={idx}
                         initial={{ opacity: 0, x: -20 }}
@@ -209,7 +300,6 @@ const EventCard = ({ event, index }) => {
                 {/* Bible Quiz Special Round Details */}
                 {event.roundDetails && (
                   <div style={{ marginBottom: '20px' }}>
-                    {/* Participants */}
                     <div style={{ marginBottom: '16px', paddingLeft: '8px', borderLeft: '3px solid #c65d21' }}>
                       <Typography sx={{
                         fontFamily: "'Old Standard TT', serif",
@@ -221,20 +311,14 @@ const EventCard = ({ event, index }) => {
                         {event.roundDetails.participants}
                       </Typography>
                     </div>
-
-                    {/* Preliminary Round */}
                     <RoundSection round={event.roundDetails.preliminary} />
-
-                    {/* Mains Round */}
                     <RoundSection round={event.roundDetails.mains} />
-
-                    {/* Bible Version */}
                     <div style={{
                       background: 'rgba(198,93,33,0.08)',
                       padding: '12px 16px',
                       borderRadius: '6px',
                       border: '1px solid rgba(198,93,33,0.2)',
-                      marginBottom: '20px'
+                      marginBottom: '16px'
                     }}>
                       <Typography sx={{
                         fontFamily: "'Old Standard TT', serif",
@@ -290,6 +374,10 @@ const EventCard = ({ event, index }) => {
                     </motion.li>
                   ))}
                 </ul>
+
+                {/* Organiser Block — after rules */}
+                {organiser && <OrganiserBlock value={organiser} />}
+
               </motion.div>
             )}
           </AnimatePresence>
