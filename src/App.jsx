@@ -357,7 +357,7 @@ const FlashThroughTime = () => (
                 margin: 0,
                 lineHeight: 1.4
               }}>
-                ✦ {photo.tag} ✦
+                 {photo.tag} 
               </p>
             </div>
             <div style={{
