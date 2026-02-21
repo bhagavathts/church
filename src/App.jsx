@@ -258,8 +258,8 @@ const FlashThroughTime = () => (
       maxWidth: '1100px'
     }}>
       {[
-        { src: '/group.jpeg', label: 'Then', year: '2007' },
-        { src: '/group1.jpeg', label: 'Now', year: '2026' }
+        { src: '/group.jpeg', label: 'Then', year: '2007', tag: 'Doulos 2007' },
+        { src: '/group1.jpeg', label: 'Now', year: '2026', tag: 'SMCY 2025' }
       ].map((photo, i) => (
         <motion.div
           key={i}
@@ -302,7 +302,7 @@ const FlashThroughTime = () => (
             border: '3px solid #8b2500',
             boxShadow: '0 12px 40px rgba(139,37,0,0.3), inset 0 2px 8px rgba(255,255,255,0.2)'
           }}>
-            <img
+              <img
               src={photo.src}
               alt={`Doulos ${photo.label}`}
               style={{
@@ -325,6 +325,48 @@ const FlashThroughTime = () => (
               pointerEvents: 'none'
             }} />
           </div>
+
+          {/* Creative tag — outside below the photo frame */}
+          <div style={{
+            marginTop: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            width: '100%',
+            justifyContent: 'center'
+          }}>
+            <div style={{
+              flex: 1,
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent, #c65d21)'
+            }} />
+            <div style={{
+              background: 'linear-gradient(135deg, rgba(244,228,193,0.97), rgba(232,212,168,0.97))',
+              border: '1.5px solid #c65d21',
+              borderRadius: '20px',
+              padding: '6px 18px',
+              boxShadow: '0 3px 10px rgba(139,37,0,0.15)'
+            }}>
+              <p style={{
+                fontFamily: "'Cinzel', serif",
+                fontSize: 'clamp(11px, 1.6vw, 14px)',
+                color: '#8b2500',
+                fontWeight: 700,
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                margin: 0,
+                lineHeight: 1.4
+              }}>
+                ✦ {photo.tag} ✦
+              </p>
+            </div>
+            <div style={{
+              flex: 1,
+              height: '1px',
+              background: 'linear-gradient(90deg, #c65d21, transparent)'
+            }} />
+          </div>
+
         </motion.div>
       ))}
     </div>
@@ -425,7 +467,7 @@ const EsteemedLeadership = () => (
             maxWidth: '260px'
           }}
         >
-          {/* Round photo */}
+          {/* Round photo — always bright, no touch/hover dim effect */}
           <div style={{
             width: 'clamp(130px, 18vw, 180px)',
             height: 'clamp(130px, 18vw, 180px)',
@@ -434,7 +476,8 @@ const EsteemedLeadership = () => (
             border: '4px solid #8b2500',
             boxShadow: '0 8px 30px rgba(139,37,0,0.35), 0 0 0 3px rgba(198,93,33,0.2)',
             marginBottom: '18px',
-            flexShrink: 0
+            flexShrink: 0,
+            WebkitTapHighlightColor: 'transparent'
           }}>
             <img
               src={leader.src}
@@ -443,7 +486,12 @@ const EsteemedLeadership = () => (
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
-                objectPosition: 'top'
+                objectPosition: 'top',
+                filter: 'brightness(1.05) contrast(1.02)',
+                WebkitFilter: 'brightness(1.05) contrast(1.02)',
+                pointerEvents: 'none',
+                userSelect: 'none',
+                WebkitUserSelect: 'none'
               }}
             />
           </div>
@@ -669,7 +717,6 @@ function App() {
                   </div>
                 </motion.div>
 
-               
               </motion.div>
             </section>
 
@@ -774,7 +821,7 @@ function App() {
                 <div className="footer-section">
                   <h3 className="footer-heading">Follow Us</h3>
                   <div className="social-links">
-                    {/* Fixed: added missing <a> tags */}
+                    {/* Fixed: added missing <a> tag for Instagram */}
                     <a
                       href="https://www.instagram.com/s_m_c_youth?igsh=MWh0cThkMTMxejR1ag=="
                       target="_blank"
@@ -786,6 +833,7 @@ function App() {
                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                       </svg>
                     </a>
+                    {/* Fixed: added missing <a> tag for YouTube */}
                     <a
                       href="https://youtube.com/@csist.matthewschurchyouth?si=4ADYx4HSBJS-Sahs"
                       target="_blank"
