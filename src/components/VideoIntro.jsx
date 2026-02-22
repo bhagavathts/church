@@ -18,7 +18,6 @@ const VideoIntro = ({ onComplete }) => {
       setIsTablet(true);
     }
 
-    // Detect Safari (includes iOS Safari and macOS Safari)
     const ua = navigator.userAgent;
     const safari =
       /Safari/.test(ua) &&
@@ -32,20 +31,56 @@ const VideoIntro = ({ onComplete }) => {
   useEffect(() => {
     if (!isMobile) return;
     const video = videoRef.current;
-    if (!video || !videoLoaded) return;
+    if (!video) return;
 
-    // On iOS, autoplay only works muted — we set muted via attribute already
-    // Try to unmute after play starts (may silently fail on iOS, that's fine)
-    const p = video.play();
-    if (p !== undefined) {
-      p.then(() => {
-        // Try to unmute — will only work if user has interacted
-        video.muted = false;
-      }).catch(() => {
-        // Stays muted and plays — acceptable on iOS
-      });
-    }
-  }, [isMobile, videoLoaded]);
+    // Fallback: if canPlay never fires within 4s, force show and try play
+    const fallbackTimer = setTimeout(() => {
+      setVideoLoaded(true);
+      video.play().catch(() => {});
+    }, 4000);
+
+    const handleCanPlay = () => {
+      clearTimeout(fallbackTimer);
+      setVideoLoaded(true);
+      const p = video.play();
+      if (p !== undefined) {
+        p.then(() => {
+          // Try unmute after play — silently fails on iOS, that's fine
+          video.muted = false;
+        }).catch(() => {
+          // Stays muted, still plays
+        });
+      }
+    };
+
+    const handleLoadedData = () => {
+      clearTimeout(fallbackTimer);
+      setVideoLoaded(true);
+      video.play().catch(() => {});
+    };
+
+    const handleError = () => {
+      clearTimeout(fallbackTimer);
+      setError(true);
+      setTimeout(() => onComplete(), 500);
+    };
+
+    video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('canplaythrough', handleCanPlay);
+    video.addEventListener('loadeddata', handleLoadedData);
+    video.addEventListener('error', handleError);
+
+    // Force load
+    video.load();
+
+    return () => {
+      clearTimeout(fallbackTimer);
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('canplaythrough', handleCanPlay);
+      video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('error', handleError);
+    };
+  }, [isMobile, onComplete]);
 
   // ── DESKTOP: fullscreen + play ──
   useEffect(() => {
@@ -55,11 +90,9 @@ const VideoIntro = ({ onComplete }) => {
     if (!video || !videoLoaded) return;
 
     const playVideo = () => {
-      // Remove muted attribute explicitly for non-Safari desktop
       if (!isSafari) {
         video.muted = false;
       }
-
       const p = video.play();
       if (p !== undefined) {
         p.catch(() => {
@@ -73,12 +106,10 @@ const VideoIntro = ({ onComplete }) => {
     };
 
     const requestFullscreen = async () => {
-      // iOS Safari does not support fullscreen API — skip entirely
       if (isSafari && /iPhone|iPad|iPod/.test(navigator.userAgent)) {
         playVideo();
         return;
       }
-
       try {
         if (container.requestFullscreen) {
           await container.requestFullscreen();
@@ -89,7 +120,6 @@ const VideoIntro = ({ onComplete }) => {
         } else if (container.msRequestFullscreen) {
           await container.msRequestFullscreen();
         } else {
-          // Fullscreen not supported — just play inline
           playVideo();
           return;
         }
@@ -113,7 +143,6 @@ const VideoIntro = ({ onComplete }) => {
         document.webkitFullscreenElement ||
         document.mozFullScreenElement ||
         document.msFullscreenElement;
-
       if (!isFullscreen) {
         onComplete();
       }
@@ -129,8 +158,6 @@ const VideoIntro = ({ onComplete }) => {
       document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
       document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
       document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
-
-      // Exit fullscreen on cleanup
       try {
         if (document.exitFullscreen) document.exitFullscreen();
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
@@ -140,7 +167,7 @@ const VideoIntro = ({ onComplete }) => {
     };
   }, [onComplete, isMobile]);
 
-  // ── TABLET: play inline on canplay ──
+  // ── TABLET ──
   const handleCanPlayTablet = () => {
     setVideoLoaded(true);
     if (isTablet && videoRef.current) {
@@ -190,7 +217,7 @@ const VideoIntro = ({ onComplete }) => {
           overflow: 'hidden'
         }}
       >
-        {/* Loading spinner */}
+        {/* Loading spinner — shown until video ready */}
         {!videoLoaded && !error && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -232,11 +259,13 @@ const VideoIntro = ({ onComplete }) => {
           </motion.div>
         )}
 
-        {/* 
-          IMPORTANT FOR IOS:
-          - muted must be a boolean attribute present in HTML (not toggled via JS before play)
-          - playsInline is required
-          - autoPlay works on iOS only when muted
+        {/*
+          KEY FIXES FOR MOBILE (iOS + Android):
+          1. video is always rendered (not display:none) — visibility:hidden used instead
+             so the browser can load and decode it even before it's "visible"
+          2. muted + playsInline + autoPlay all present as HTML attributes
+          3. preload="auto" tells browser to start buffering immediately
+          4. No src on the video tag itself — only inside <source>
         */}
         <video
           ref={videoRef}
@@ -244,18 +273,17 @@ const VideoIntro = ({ onComplete }) => {
           muted
           autoPlay
           preload="auto"
-          onCanPlay={() => setVideoLoaded(true)}
           onEnded={() => setTimeout(() => onComplete(), 500)}
-          onError={() => {
-            setError(true);
-            setTimeout(() => onComplete(), 500);
-          }}
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
             filter: 'contrast(1.12) brightness(1.05) saturate(1.08)',
-            display: videoLoaded ? 'block' : 'none'
+            // Use visibility + opacity instead of display:none
+            // so browser still loads & decodes the video
+            visibility: videoLoaded ? 'visible' : 'hidden',
+            opacity: videoLoaded ? 1 : 0,
+            transition: 'opacity 0.4s ease'
           }}
         >
           <source src="/portrait.mp4" type="video/mp4" />
@@ -308,11 +336,6 @@ const VideoIntro = ({ onComplete }) => {
         justifyContent: 'center',
         backgroundColor: '#000000'
       }}>
-        {/*
-          For Safari/macOS: muted is intentionally NOT set here as an attribute.
-          We control muting via JS after play() resolves.
-          autoPlay is set for desktop only (not tablet).
-        */}
         <video
           ref={videoRef}
           onEnded={handleVideoEnd}
