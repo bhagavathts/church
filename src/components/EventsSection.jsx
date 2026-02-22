@@ -60,7 +60,7 @@ const EventsSection = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
         style={{
-          marginBottom: '80px',
+          marginBottom: '40px',
           background: 'linear-gradient(135deg, rgba(139,37,0,0.08) 0%, rgba(198,93,33,0.05) 100%)',
           border: '3px solid #c65d21',
           borderRadius: '16px',
@@ -139,6 +139,169 @@ const EventsSection = () => {
         </ul>
       </motion.section>
 
+      {/* Instagram Live Moments Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        style={{
+          marginBottom: '80px',
+          position: 'relative',
+          borderRadius: '14px',
+          overflow: 'hidden',
+          border: '2px solid rgba(198,93,33,0.5)',
+          background: 'linear-gradient(135deg, rgba(61,40,23,0.97) 0%, rgba(139,37,0,0.95) 50%, rgba(61,40,23,0.97) 100%)',
+          boxShadow: '0 10px 40px rgba(139,37,0,0.35), inset 0 1px 0 rgba(244,228,193,0.1)'
+        }}
+      >
+        {/* Decorative corner marks */}
+        {[
+          { top: '10px', left: '14px' },
+          { top: '10px', right: '14px' },
+          { bottom: '10px', left: '14px' },
+          { bottom: '10px', right: '14px' }
+        ].map((pos, i) => (
+          <span key={i} style={{
+            position: 'absolute',
+            ...pos,
+            fontSize: '16px',
+            color: 'rgba(198,93,33,0.6)',
+            lineHeight: 1,
+            pointerEvents: 'none'
+          }}>✦</span>
+        ))}
+
+        {/* Top thin accent line */}
+        <div style={{
+          height: '3px',
+          background: 'linear-gradient(90deg, transparent, #c65d21, #f4e4c1, #c65d21, transparent)'
+        }} />
+
+        <div style={{
+          padding: 'clamp(24px, 4vw, 40px) clamp(20px, 4vw, 50px)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '16px'
+        }}>
+
+          {/* Tag line top */}
+          <motion.p
+            initial={{ opacity: 0, letterSpacing: '8px' }}
+            whileInView={{ opacity: 1, letterSpacing: '4px' }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            style={{
+              fontFamily: "'Cinzel', serif",
+              fontSize: 'clamp(10px, 1.6vw, 13px)',
+              color: '#c65d21',
+              letterSpacing: '4px',
+              textTransform: 'uppercase',
+              fontWeight: 700,
+              margin: 0
+            }}
+          >
+            ✦ Live From The Ground ✦
+          </motion.p>
+
+          {/* Main message */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.7 }}
+            style={{
+              fontFamily: "'Old Standard TT', serif",
+              fontSize: 'clamp(14px, 2.4vw, 18px)',
+              color: '#f4e4c1',
+              textAlign: 'center',
+              lineHeight: '1.8',
+              margin: 0,
+              maxWidth: '700px'
+            }}
+          >
+            Tap <span style={{ color: '#c65d21', fontWeight: 700 }}>follow</span> on our Instagram and stay tuned for spontaneous Insta moments happening live.
+            Charge up, stay sharp, and be ready to post!
+          </motion.p>
+
+          {/* Fire quote */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.7 }}
+            style={{
+              background: 'rgba(198,93,33,0.15)',
+              border: '1px solid rgba(198,93,33,0.4)',
+              borderRadius: '8px',
+              padding: '10px 24px',
+            }}
+          >
+            <p style={{
+              fontFamily: "'Cinzel', serif",
+              fontSize: 'clamp(13px, 2vw, 17px)',
+              color: '#f4e4c1',
+              fontWeight: 700,
+              letterSpacing: '1.5px',
+              margin: 0,
+              textAlign: 'center'
+            }}>
+              "On the spot. On the gram. On fire." 🔥📸
+            </p>
+          </motion.div>
+
+          {/* Instagram Button */}
+          <motion.a
+            href="https://www.instagram.com/s_m_c_youth?igsh=MWh0cThkMTMxejR1ag=="
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            whileHover={{ scale: 1.06, y: -2 }}
+            whileTap={{ scale: 0.96 }}
+            style={{
+              marginTop: '6px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '14px 36px',
+              background: 'linear-gradient(135deg, #c65d21 0%, #8b2500 100%)',
+              color: '#f4e4c1',
+              textDecoration: 'none',
+              borderRadius: '50px',
+              fontFamily: "'Cinzel', serif",
+              fontSize: 'clamp(13px, 2vw, 16px)',
+              fontWeight: 700,
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              border: '2px solid rgba(244,228,193,0.25)',
+              boxShadow: '0 6px 24px rgba(139,37,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15)',
+              cursor: 'pointer'
+            }}
+          >
+            {/* Instagram SVG icon */}
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              style={{ width: '20px', height: '20px', flexShrink: 0 }}
+            >
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            Follow Us on Instagram
+          </motion.a>
+
+        </div>
+
+        {/* Bottom thin accent line */}
+        <div style={{
+          height: '3px',
+          background: 'linear-gradient(90deg, transparent, #c65d21, #f4e4c1, #c65d21, transparent)'
+        }} />
+      </motion.div>
+
       {/* Offline Events */}
       <section style={{ marginBottom: '100px' }}>
         <SectionTitle> Offline Events </SectionTitle>
@@ -165,7 +328,7 @@ const EventsSection = () => {
             position: 'relative',
           }}
         >
-          {/* Decorative label — outside the bordered box so it's never clipped */}
+          {/* Decorative label */}
           <div style={{
             display: 'flex',
             justifyContent: 'center',
