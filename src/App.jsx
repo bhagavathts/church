@@ -803,7 +803,7 @@ function App() {
                   <h3 className="footer-heading">Visit Us</h3>
                   {/* Fixed: added missing <a> tag */}
                   <a
-                    href="https://maps.app.goo.gl/itbZtygmZLPE3ydu5?g_st=iw"
+                    href="https://maps.app.goo.gl/82trbc8tkGsa4AkA9?g_st=ic"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="location-link"
