@@ -438,12 +438,12 @@ const EsteemedLeadership = () => (
       {[
         {
           src: '/presbyter.jpeg',
-          name: 'Rev. C. Samuel',
+          name: 'Rev. C. Samuel Jebakumar',
           role: 'Presbyter In-Charge'
         },
         {
           src: '/pastoratesecretary.jpeg',
-          name: 'Mr. S. Albert Kingsbell Jebakuma',
+          name: 'Mr. S. Albert Kingsbell ',
           role: 'Pastorate Secretary'
         },
         {
