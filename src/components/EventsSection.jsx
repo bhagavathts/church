@@ -94,7 +94,7 @@ const EventsSection = () => {
 
         <ul style={{ listStyle: 'none', padding: 0, margin: 0, position: 'relative', zIndex: 1 }}>
           {[
-            "Registration will be open between 8:30 AM and 9:30 AM.",
+            "On the day of the event the registration will be open between 8:30 AM and 9:30 AM.",
             "The registration fee is Rs.2000 per church and Rs.100 for individual participants.",
             "Please take a moment to confirm your participation on or before April 5th through the online registration form.",
             "All online event submissions must be completed on or before April 7th.",
