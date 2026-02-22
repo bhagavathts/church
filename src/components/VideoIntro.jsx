@@ -8,6 +8,7 @@ const VideoIntro = ({ onComplete }) => {
   const [error, setError] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [isSafari, setIsSafari] = useState(false);
 
   useEffect(() => {
     const width = window.innerWidth;
@@ -16,21 +17,52 @@ const VideoIntro = ({ onComplete }) => {
     } else if (width >= 768 && width < 1024) {
       setIsTablet(true);
     }
+
+    // Detect Safari (includes iOS Safari and macOS Safari)
+    const ua = navigator.userAgent;
+    const safari =
+      /Safari/.test(ua) &&
+      !/Chrome/.test(ua) &&
+      !/CriOS/.test(ua) &&
+      !/FxiOS/.test(ua);
+    setIsSafari(safari);
   }, []);
 
-  // Mobile video play logic
+  // ── MOBILE: play portrait.mp4 ──
   useEffect(() => {
     if (!isMobile) return;
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !videoLoaded) return;
 
-    const tryPlay = () => {
-      // Try with sound first
-      video.muted = false;
+    // On iOS, autoplay only works muted — we set muted via attribute already
+    // Try to unmute after play starts (may silently fail on iOS, that's fine)
+    const p = video.play();
+    if (p !== undefined) {
+      p.then(() => {
+        // Try to unmute — will only work if user has interacted
+        video.muted = false;
+      }).catch(() => {
+        // Stays muted and plays — acceptable on iOS
+      });
+    }
+  }, [isMobile, videoLoaded]);
+
+  // ── DESKTOP: fullscreen + play ──
+  useEffect(() => {
+    if (isMobile || isTablet) return;
+    const video = videoRef.current;
+    const container = containerRef.current;
+    if (!video || !videoLoaded) return;
+
+    const playVideo = () => {
+      // Remove muted attribute explicitly for non-Safari desktop
+      if (!isSafari) {
+        video.muted = false;
+      }
+
       const p = video.play();
       if (p !== undefined) {
         p.catch(() => {
-          // If blocked, fall back to muted (autoplay policy)
           video.muted = true;
           video.play().catch(() => {
             setError(true);
@@ -40,76 +72,49 @@ const VideoIntro = ({ onComplete }) => {
       }
     };
 
-    if (videoLoaded) {
-      tryPlay();
-    }
-  }, [isMobile, videoLoaded, onComplete]);
-
-  // Desktop fullscreen logic — untouched
-  useEffect(() => {
-    if (isMobile || isTablet) return;
-
-    const video = videoRef.current;
-    const container = containerRef.current;
-
     const requestFullscreen = async () => {
+      // iOS Safari does not support fullscreen API — skip entirely
+      if (isSafari && /iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        playVideo();
+        return;
+      }
+
       try {
-        if (container) {
-          if (container.requestFullscreen) {
-            await container.requestFullscreen();
-          } else if (container.webkitRequestFullscreen) {
-            await container.webkitRequestFullscreen();
-          } else if (container.mozRequestFullScreen) {
-            await container.mozRequestFullScreen();
-          } else if (container.msRequestFullscreen) {
-            await container.msRequestFullscreen();
-          }
+        if (container.requestFullscreen) {
+          await container.requestFullscreen();
+        } else if (container.webkitRequestFullscreen) {
+          await container.webkitRequestFullscreen();
+        } else if (container.mozRequestFullScreen) {
+          await container.mozRequestFullScreen();
+        } else if (container.msRequestFullscreen) {
+          await container.msRequestFullscreen();
+        } else {
+          // Fullscreen not supported — just play inline
+          playVideo();
+          return;
         }
+        playVideo();
       } catch (err) {
-        console.log('Fullscreen request failed:', err);
+        console.log('Fullscreen failed, playing inline:', err);
+        playVideo();
       }
     };
 
-    if (videoLoaded) {
-      requestFullscreen();
+    requestFullscreen();
+  }, [videoLoaded, isMobile, isTablet, isSafari, onComplete]);
 
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            console.log('Video playing with sound in fullscreen');
-          })
-          .catch(err => {
-            console.log('Autoplay with sound failed, trying muted:', err);
-            video.muted = true;
-            video.play().catch(err2 => {
-              console.log('Muted autoplay failed:', err2);
-              setError(true);
-              setTimeout(() => onComplete(), 500);
-            });
-          });
-      }
-    }
-  }, [videoLoaded, onComplete, isMobile, isTablet]);
-
-  // Desktop fullscreen change listener — untouched
+  // ── DESKTOP: fullscreen exit listener ──
   useEffect(() => {
     if (isMobile) return;
 
-    const exitFullscreen = () => {
-      if (document.exitFullscreen) document.exitFullscreen();
-      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-      else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
-      else if (document.msExitFullscreen) document.msExitFullscreen();
-    };
-
     const handleFullscreenChange = () => {
-      if (
-        !document.fullscreenElement &&
-        !document.webkitFullscreenElement &&
-        !document.mozFullScreenElement &&
-        !document.msFullscreenElement
-      ) {
+      const isFullscreen =
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement;
+
+      if (!isFullscreen) {
         onComplete();
       }
     };
@@ -124,11 +129,47 @@ const VideoIntro = ({ onComplete }) => {
       document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
       document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
       document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
-      exitFullscreen();
+
+      // Exit fullscreen on cleanup
+      try {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+        else if (document.msExitFullscreen) document.msExitFullscreen();
+      } catch (e) {}
     };
   }, [onComplete, isMobile]);
 
-  // Mobile render
+  // ── TABLET: play inline on canplay ──
+  const handleCanPlayTablet = () => {
+    setVideoLoaded(true);
+    if (isTablet && videoRef.current) {
+      videoRef.current.play().catch(() => {
+        videoRef.current.muted = true;
+        videoRef.current.play().catch(() => {
+          setError(true);
+          setTimeout(() => onComplete(), 500);
+        });
+      });
+    }
+  };
+
+  const handleVideoEnd = () => {
+    try {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+      else if (document.msExitFullscreen) document.msExitFullscreen();
+    } catch (e) {}
+    setTimeout(() => onComplete(), 800);
+  };
+
+  const handleVideoError = () => {
+    setError(true);
+    setTimeout(() => onComplete(), 500);
+  };
+
+  // ── MOBILE RENDER ──
   if (isMobile) {
     return (
       <motion.div
@@ -149,7 +190,7 @@ const VideoIntro = ({ onComplete }) => {
           overflow: 'hidden'
         }}
       >
-        {/* Loading spinner shown until video is ready */}
+        {/* Loading spinner */}
         {!videoLoaded && !error && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -191,10 +232,17 @@ const VideoIntro = ({ onComplete }) => {
           </motion.div>
         )}
 
+        {/* 
+          IMPORTANT FOR IOS:
+          - muted must be a boolean attribute present in HTML (not toggled via JS before play)
+          - playsInline is required
+          - autoPlay works on iOS only when muted
+        */}
         <video
           ref={videoRef}
           playsInline
           muted
+          autoPlay
           preload="auto"
           onCanPlay={() => setVideoLoaded(true)}
           onEnded={() => setTimeout(() => onComplete(), 500)}
@@ -216,41 +264,13 @@ const VideoIntro = ({ onComplete }) => {
     );
   }
 
-  // Tablet & Desktop — completely untouched
-  const handleVideoEnd = () => {
-    if (document.exitFullscreen) document.exitFullscreen();
-    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-    else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
-    else if (document.msExitFullscreen) document.msExitFullscreen();
-    setTimeout(() => onComplete(), 800);
-  };
-
-  const handleVideoError = (e) => {
-    console.error('Video error:', e);
-    setError(true);
-    setTimeout(() => onComplete(), 500);
-  };
-
-  const handleCanPlay = () => {
-    setVideoLoaded(true);
-
-    if (isTablet && videoRef.current) {
-      videoRef.current.play().catch(err => {
-        videoRef.current.muted = true;
-        videoRef.current.play().catch(() => {
-          setError(true);
-          setTimeout(() => onComplete(), 500);
-        });
-      });
-    }
-  };
-
+  // ── TABLET & DESKTOP RENDER ──
   return (
     <motion.div
       ref={containerRef}
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 1.5, ease: "easeInOut" }}
+      transition={{ duration: 1.5, ease: 'easeInOut' }}
       style={{
         position: 'fixed',
         top: 0,
@@ -288,14 +308,18 @@ const VideoIntro = ({ onComplete }) => {
         justifyContent: 'center',
         backgroundColor: '#000000'
       }}>
+        {/*
+          For Safari/macOS: muted is intentionally NOT set here as an attribute.
+          We control muting via JS after play() resolves.
+          autoPlay is set for desktop only (not tablet).
+        */}
         <video
           ref={videoRef}
           onEnded={handleVideoEnd}
           onError={handleVideoError}
-          onCanPlay={handleCanPlay}
+          onCanPlay={isTablet ? handleCanPlayTablet : () => setVideoLoaded(true)}
           playsInline
           autoPlay={!isTablet}
-          muted={false}
           preload="auto"
           style={
             isTablet
@@ -346,8 +370,8 @@ const VideoIntro = ({ onComplete }) => {
                 scale: [1, 1.1, 1]
               }}
               transition={{
-                rotate: { duration: 2, repeat: Infinity, ease: "linear" },
-                scale: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
+                rotate: { duration: 2, repeat: Infinity, ease: 'linear' },
+                scale: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' }
               }}
               style={{
                 width: 'clamp(50px, 12vw, 80px)',
@@ -361,7 +385,7 @@ const VideoIntro = ({ onComplete }) => {
             />
             <motion.p
               animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
               style={{
                 fontFamily: "'Cinzel', serif",
                 color: '#f4e4c1',
