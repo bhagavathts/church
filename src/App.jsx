@@ -142,7 +142,7 @@ const DoulosMeaning = () => (
           </span>
           <br /><br />
           It represents a life surrendered to Christ, driven by faith and purpose. DOULOS calls us to rise beyond comfort,
-          drop every chain, and live fully for Christ — with fire in our hearts and faith in our actions.
+          drop every chain, and live fully for Christ  with fire in our hearts and faith in our actions.
         </p>
       </motion.div>
 
@@ -174,8 +174,8 @@ const DoulosMeaning = () => (
           lineHeight: '1.9',
           margin: 0
         }}>
-          DOULOS was first ignited on <strong>April 14th, 2007</strong>. After a season of stillness,
-          we return to rekindle the same flame — unchanged in spirit, renewed in passion.
+          DOULOS was first ignited on <strong>April 14th, 2001</strong>. After a season of stillness,
+          we return to rekindle the same flame  unchanged in spirit, renewed in passion.
           <br /><br />
           <span style={{ color: '#8b2500', fontWeight: 600, fontStyle: 'italic' }}>
             We are delighted to announce that DOULOS will henceforth be organized every alternate year.
@@ -254,7 +254,7 @@ const FlashThroughTime = () => (
       maxWidth: '1100px'
     }}>
       {[
-        { src: '/group.jpg', label: 'Then', year: '2007', tag: 'Doulos 2007' },
+        { src: '/group.jpg', label: 'Then', year: '2001', tag: 'Doulos 2001' },
         { src: '/group1.webp', label: 'Now', year: '2026', tag: 'SMCY 2025' }
       ].map((photo, i) => (
         <motion.div

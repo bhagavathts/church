@@ -190,7 +190,7 @@ export const onlineEvents = [
     details: [
       { label: "Entry", value: "1 representative per church." },
       { label: "Event Format", value: "Tasks will be announced on the spot, participation may be individual or in groups." },
-      { label: "Task Timing", value: "Tasks will be shared for 5 consecutive days starting from April 8. Daily tasks will be posted in a common WhatsApp group at 11:00 AM and must be submitted privately by 8:00 PM on the same day." },
+      { label: "Task Timing", value: "Tasks will be shared for 5 consecutive days starting from April 8. Daily tasks will be posted in a common WhatsApp group at 11:00 AM and must be submitted privately by 11:00 PM on the same day." },
       { label: "Judging Criteria", value: "Entries will be evaluated based on creativity, relevance to the theme, clarity, and timely submission." },
       { label: "Organiser", value: "Gladys Kirubhavathy — 9361493483" }
     ],
