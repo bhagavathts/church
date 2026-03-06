@@ -60,7 +60,7 @@ const DoulosMeaning = () => (
           textTransform: 'uppercase',
           fontWeight: 600
         }}>
-          Ancient Greek
+          Ancient Greek Word
         </span>
       </motion.div>
 

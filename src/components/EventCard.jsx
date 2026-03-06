@@ -313,23 +313,49 @@ const EventCard = ({ event, index }) => {
                     </div>
                     <RoundSection round={event.roundDetails.preliminary} />
                     <RoundSection round={event.roundDetails.mains} />
-                    <div style={{
-                      background: 'rgba(198,93,33,0.08)',
-                      padding: '12px 16px',
-                      borderRadius: '6px',
-                      border: '1px solid rgba(198,93,33,0.2)',
-                      marginBottom: '16px'
-                    }}>
-                      <Typography sx={{
-                        fontFamily: "'Old Standard TT', serif",
-                        fontSize: 'clamp(13px, 2.2vw, 15px)',
-                        color: '#3d2817',
-                        lineHeight: '1.6'
-                      }}>
-                        <span style={{ color: '#8b2500', fontWeight: 700 }}>Bible Version:</span>{' '}
-                        {event.roundDetails.bibleVersion}
-                      </Typography>
-                    </div>
+                   <div style={{
+  background: 'rgba(198,93,33,0.08)',
+  padding: '12px 16px',
+  borderRadius: '6px',
+  border: '1px solid rgba(198,93,33,0.2)',
+  marginBottom: '16px'
+}}>
+  <Typography sx={{
+    fontFamily: "'Old Standard TT', serif",
+    fontSize: 'clamp(13px, 2.2vw, 15px)',
+    color: '#8b2500',
+    fontWeight: 700,
+    letterSpacing: '1px',
+    textTransform: 'uppercase',
+    marginBottom: '8px',
+    borderBottom: '1px solid rgba(198,93,33,0.3)',
+    paddingBottom: '6px'
+  }}>
+    Bible Version
+  </Typography>
+  {event.roundDetails.bibleVersion.split(', ').map((version, idx) => (
+    <div key={idx} style={{ display: 'flex', gap: '8px', marginBottom: '6px', alignItems: 'flex-start' }}>
+      <Typography sx={{
+        fontFamily: "'Old Standard TT', serif",
+        fontSize: 'clamp(13px, 2.2vw, 15px)',
+        color: '#8b2500',
+        fontWeight: 700,
+        whiteSpace: 'nowrap',
+        flexShrink: 0
+      }}>
+        {version.split(':')[0]}:
+      </Typography>
+      <Typography sx={{
+        fontFamily: "'Old Standard TT', serif",
+        fontSize: 'clamp(13px, 2.2vw, 15px)',
+        color: '#3d2817',
+        lineHeight: '1.6'
+      }}>
+        {version.split(':').slice(1).join(':').trim()}
+      </Typography>
+    </div>
+  ))}
+</div>
                   </div>
                 )}
 

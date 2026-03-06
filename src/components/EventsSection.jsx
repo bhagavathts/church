@@ -4,7 +4,7 @@ import { offlineEvents, onlineEvents } from '../data/events';
 
 const onlineSubmissionGuidelines = [
   "Upload your files to Google Drive and share the Drive link with us.",
-  "Name the files using your Church Name.",
+  "All files must be appropriately named after your respective Church Name.",
   "Ensure the file access is unrestricted / accessible.",
   "Mail all submissions to doulos.smcy@gmail.com on or before April 7th."
 ];
@@ -407,20 +407,7 @@ const EventsSection = () => {
               ))}
             </ul>
 
-            <p style={{
-              fontFamily: "'Cinzel', serif",
-              fontSize: 'clamp(12px, 1.8vw, 14px)',
-              color: '#8b2500',
-              fontWeight: 700,
-              textAlign: 'center',
-              marginTop: '20px',
-              marginBottom: '0',
-              letterSpacing: '1px',
-              borderTop: '1px solid rgba(198,93,33,0.3)',
-              paddingTop: '16px'
-            }}>
-              ⚠️ Deadline: April 7th — Late submissions will not be accepted.
-            </p>
+      
           </div>
         </motion.div>
 
